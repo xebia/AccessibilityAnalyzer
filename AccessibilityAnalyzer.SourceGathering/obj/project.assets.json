@@ -2,25 +2,6 @@
   "version": 3,
   "targets": {
     "net9.0": {
-      "Microsoft.AspNetCore.OpenApi/9.0.2": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.OpenApi": "1.6.17"
-        },
-        "compile": {
-          "lib/net9.0/Microsoft.AspNetCore.OpenApi.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net9.0/Microsoft.AspNetCore.OpenApi.dll": {
-            "related": ".xml"
-          }
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
-      },
       "Microsoft.Bcl.AsyncInterfaces/6.0.0": {
         "type": "package",
         "compile": {
@@ -31,19 +12,6 @@
         "runtime": {
           "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
             "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.OpenApi/1.6.17": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/Microsoft.OpenApi.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.OpenApi.dll": {
-            "related": ".pdb;.xml"
           }
         }
       },
@@ -141,39 +109,10 @@
         "build": {
           "buildTransitive/netcoreapp3.1/System.Text.Json.targets": {}
         }
-      },
-      "AccessibilityAnalyzer.SourceGathering/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v9.0",
-        "dependencies": {
-          "Microsoft.Playwright": "1.50.0"
-        },
-        "compile": {
-          "bin/placeholder/AccessibilityAnalyzer.SourceGathering.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/AccessibilityAnalyzer.SourceGathering.dll": {}
-        }
       }
     }
   },
   "libraries": {
-    "Microsoft.AspNetCore.OpenApi/9.0.2": {
-      "sha512": "JUndpjRNdG8GvzBLH/J4hen4ehWaPcshtiQ6+sUs1Bcj3a7dOsmWpDloDlpPeMOVSlhHwUJ3Xld0ClZjsFLgFQ==",
-      "type": "package",
-      "path": "microsoft.aspnetcore.openapi/9.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "PACKAGE.md",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net9.0/Microsoft.AspNetCore.OpenApi.dll",
-        "lib/net9.0/Microsoft.AspNetCore.OpenApi.xml",
-        "microsoft.aspnetcore.openapi.9.0.2.nupkg.sha512",
-        "microsoft.aspnetcore.openapi.nuspec"
-      ]
-    },
     "Microsoft.Bcl.AsyncInterfaces/6.0.0": {
       "sha512": "UcSjPsst+DfAdJGVDsu346FX0ci0ah+lw3WRtn18NUwEqRt70HaOQ7lI72vy3+1LxtqI3T5GWwV39rQSrCzAeg==",
       "type": "package",
@@ -193,21 +132,6 @@
         "microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
         "microsoft.bcl.asyncinterfaces.nuspec",
         "useSharedDesignerContext.txt"
-      ]
-    },
-    "Microsoft.OpenApi/1.6.17": {
-      "sha512": "Le+kehlmrlQfuDFUt1zZ2dVwrhFQtKREdKBo+rexOwaCoYP0/qpgT9tLxCsZjsgR5Itk1UKPcbgO+FyaNid/bA==",
-      "type": "package",
-      "path": "microsoft.openapi/1.6.17",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "lib/netstandard2.0/Microsoft.OpenApi.dll",
-        "lib/netstandard2.0/Microsoft.OpenApi.pdb",
-        "lib/netstandard2.0/Microsoft.OpenApi.xml",
-        "microsoft.openapi.1.6.17.nupkg.sha512",
-        "microsoft.openapi.nuspec"
       ]
     },
     "Microsoft.Playwright/1.50.0": {
@@ -753,17 +677,11 @@
         "system.text.json.nuspec",
         "useSharedDesignerContext.txt"
       ]
-    },
-    "AccessibilityAnalyzer.SourceGathering/1.0.0": {
-      "type": "project",
-      "path": "../AccessibilityAnalyzer.SourceGathering/AccessibilityAnalyzer.SourceGathering.csproj",
-      "msbuildProject": "../AccessibilityAnalyzer.SourceGathering/AccessibilityAnalyzer.SourceGathering.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "AccessibilityAnalyzer.SourceGathering >= 1.0.0",
-      "Microsoft.AspNetCore.OpenApi >= 9.0.2"
+      "Microsoft.Playwright >= 1.50.0"
     ]
   },
   "packageFolders": {
@@ -772,11 +690,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jo/Dev/AccessibilityAnalyzer/AccessibilityAnalyzer/AccessibilityAnalyzer.csproj",
-      "projectName": "AccessibilityAnalyzer",
-      "projectPath": "/Users/jo/Dev/AccessibilityAnalyzer/AccessibilityAnalyzer/AccessibilityAnalyzer.csproj",
+      "projectUniqueName": "/Users/jo/Dev/AccessibilityAnalyzer/AccessibilityAnalyzer.SourceGathering/AccessibilityAnalyzer.SourceGathering.csproj",
+      "projectName": "AccessibilityAnalyzer.SourceGathering",
+      "projectPath": "/Users/jo/Dev/AccessibilityAnalyzer/AccessibilityAnalyzer.SourceGathering/AccessibilityAnalyzer.SourceGathering.csproj",
       "packagesPath": "/Users/jo/.nuget/packages/",
-      "outputPath": "/Users/jo/Dev/AccessibilityAnalyzer/AccessibilityAnalyzer/obj/",
+      "outputPath": "/Users/jo/Dev/AccessibilityAnalyzer/AccessibilityAnalyzer.SourceGathering/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/jo/.nuget/NuGet/NuGet.Config"
@@ -790,11 +708,7 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {
-            "/Users/jo/Dev/AccessibilityAnalyzer/AccessibilityAnalyzer.SourceGathering/AccessibilityAnalyzer.SourceGathering.csproj": {
-              "projectPath": "/Users/jo/Dev/AccessibilityAnalyzer/AccessibilityAnalyzer.SourceGathering/AccessibilityAnalyzer.SourceGathering.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -813,9 +727,9 @@
       "net9.0": {
         "targetAlias": "net9.0",
         "dependencies": {
-          "Microsoft.AspNetCore.OpenApi": {
+          "Microsoft.Playwright": {
             "target": "Package",
-            "version": "[9.0.2, )"
+            "version": "[1.50.0, )"
           }
         },
         "imports": [
@@ -830,9 +744,6 @@
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {
-          "Microsoft.AspNetCore.App": {
-            "privateAssets": "none"
-          },
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }

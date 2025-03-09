@@ -17,4 +17,8 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\AccessibilityAnalyzer.SourceGathering\AccessibilityAnalyzer.SourceGathering.csproj" />
+    </ItemGroup>
+
 </Project>
