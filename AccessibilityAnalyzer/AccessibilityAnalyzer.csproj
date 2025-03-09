@@ -10,7 +10,6 @@
     <ItemGroup>
         <PackageReference Include="DotNetEnv" Version="3.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2"/>
-        <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" Version="1.40.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -20,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\AccessibilityAnalyzer.Ai\AccessibilityAnalyzer.Ai.csproj" />
       <ProjectReference Include="..\AccessibilityAnalyzer.SourceGathering\AccessibilityAnalyzer.SourceGathering.csproj" />
     </ItemGroup>
 
