@@ -4,7 +4,7 @@ namespace AccessibilityAnalyzer.SourceGathering;
 
 public class SourceGathering
 {
-    public async Task<PageData?> GetPageData(string url)
+    public async Task<PageData?> GetPageData(Uri uri)
     {
         try
         {
@@ -14,15 +14,15 @@ public class SourceGathering
                 Headless = true
             });
 
-            var (desktopHtmlContent, desktopScreenshot) = await CapturePageAsync(browser, url, "normal");
-            var (_, mobileScreenshot) = await CapturePageAsync(browser, url, "mobile");
+            var (desktopHtmlContent, desktopScreenshot) = await CapturePageAsync(browser, uri, "normal");
+            var (_, mobileScreenshot) = await CapturePageAsync(browser, uri, "mobile");
 
             await browser.CloseAsync();
 
             if (desktopHtmlContent == null || desktopScreenshot == null || mobileScreenshot == null)
                 return null;
 
-            return new PageData(url, desktopHtmlContent, desktopScreenshot, mobileScreenshot);
+            return new PageData(uri.AbsoluteUri, desktopHtmlContent, desktopScreenshot, mobileScreenshot);
         }
         catch (Exception ex)
         {
@@ -33,7 +33,7 @@ public class SourceGathering
 
     private async Task<(string? HtmlContent, byte[]? Screenshot)> CapturePageAsync(
         IBrowser browser,
-        string url,
+        Uri uri,
         string mode
     )
     {
@@ -50,8 +50,8 @@ public class SourceGathering
             var context = await browser.NewContextAsync(contextOptions);
             var page = await context.NewPageAsync();
 
-            Console.WriteLine($"Navigating to: {url} in {mode} mode");
-            await page.GotoAsync(url, new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
+            Console.WriteLine($"Navigating to: {uri.AbsoluteUri} in {mode} mode");
+            await page.GotoAsync(uri.AbsoluteUri, new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
 
             // Capture Screenshot
             var screenshotBytes = await page.ScreenshotAsync(new PageScreenshotOptions { FullPage = true });

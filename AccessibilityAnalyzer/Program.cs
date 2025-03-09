@@ -30,7 +30,13 @@ app.MapGet("/analyze",
             [FromQuery(Name = "url")] string url
         ) =>
         {
-            return await analyzer.AnalyzeUrl(url);
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            {
+                return Results.BadRequest<string>("Invalid URL");
+            }
+
+            var analyzeUrlResult = await analyzer.AnalyzeUrl(uri);
+            return Results.Ok(analyzeUrlResult);
         })
     .WithName("AnalyzeUrl");
 
