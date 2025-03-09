@@ -28,23 +28,21 @@ public class SourceGathering
             Console.WriteLine($"An error occurred: {ex.Message}");
             return false;
         }
-        
+
         return true;
     }
-    
-    async Task CapturePageAsync(IBrowser browser, string url, string outputDir, string mode)
+
+    private async Task CapturePageAsync(IBrowser browser, string url, string outputDir, string mode)
     {
         try
         {
             var contextOptions = new BrowserNewContextOptions();
             if (mode == "mobile")
-            {
                 contextOptions = new BrowserNewContextOptions
                 {
                     ViewportSize = new ViewportSize { Width = 375, Height = 667 },
                     IsMobile = true
                 };
-            }
 
             var context = await browser.NewContextAsync(contextOptions);
             var page = await context.NewPageAsync();
@@ -53,7 +51,7 @@ public class SourceGathering
             await page.GotoAsync(url, new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
 
             // Capture Screenshot
-            string screenshotPath = Path.Combine(outputDir, $"screenshot_{mode}.png");
+            var screenshotPath = Path.Combine(outputDir, $"screenshot_{mode}.png");
             await page.ScreenshotAsync(new PageScreenshotOptions { Path = screenshotPath, FullPage = true });
             Console.WriteLine($"Screenshot saved: {screenshotPath}");
 
@@ -64,8 +62,8 @@ public class SourceGathering
                 return;
             }
 
-            string htmlContent = await page.ContentAsync();
-            string htmlPath = Path.Combine(outputDir, $"page_{mode}.html");
+            var htmlContent = await page.ContentAsync();
+            var htmlPath = Path.Combine(outputDir, $"page_{mode}.html");
             await File.WriteAllTextAsync(htmlPath, htmlContent);
             Console.WriteLine($"HTML content saved: {htmlPath}");
         }
@@ -74,5 +72,4 @@ public class SourceGathering
             Console.WriteLine($"An error occurred while capturing the page in {mode} mode: {ex.Message}");
         }
     }
-
 }
