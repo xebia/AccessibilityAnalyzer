@@ -20,12 +20,12 @@ if (app.Environment.IsDevelopment()) app.MapOpenApi();
 app.UseHttpsRedirection();
 
 app.MapGet("/analyze",
-        (
+        async (
             [FromServices] IAnalyzer analyzer,
             [FromQuery(Name = "url")] string url
         ) =>
         {
-            return analyzer.AnalyzeUrl(url);
+            return await analyzer.AnalyzeUrl(url);
         })
     .WithName("AnalyzeUrl");
 

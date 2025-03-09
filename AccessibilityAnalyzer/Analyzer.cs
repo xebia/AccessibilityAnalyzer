@@ -1,14 +1,18 @@
 namespace AccessibilityAnalyzer;
 
-public class Analyzer : IAnalyzer
+public class Analyzer(SourceGathering.SourceGathering sourceGathering) : IAnalyzer
 {
-    public string AnalyzeUrl(string url)
+    public async Task<string> AnalyzeUrl(string url)
     {
-        return url;
+        var pageData = await sourceGathering.GetPageData(url);
+
+        if (pageData == null) return string.Empty;
+
+        return pageData.HtmlContent;
     }
 }
 
 public interface IAnalyzer
 {
-    string AnalyzeUrl(string url);
+    Task<string> AnalyzeUrl(string url);
 }
