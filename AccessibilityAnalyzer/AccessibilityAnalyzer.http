@@ -1,0 +1,6 @@
+@AccessibilityAnalyzer_HostAddress = http://localhost:5239
+
+GET {{AccessibilityAnalyzer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
