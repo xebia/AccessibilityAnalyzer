@@ -1,8 +1,12 @@
 using AccessibilityAnalyzer;
+using AccessibilityAnalyzer.Extensions;
 using AccessibilityAnalyzer.SourceGathering;
+using DotNetEnv;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Env.Load();
 
 // Add services to the container.
 builder.Services.AddScoped<SourceGathering>();
@@ -11,6 +15,7 @@ builder.Services.AddScoped<IAnalyzer, Analyzer>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddOpenAiServices();
 
 var app = builder.Build();
 
