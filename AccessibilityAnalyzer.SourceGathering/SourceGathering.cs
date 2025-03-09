@@ -4,35 +4,38 @@ namespace AccessibilityAnalyzer.SourceGathering;
 
 public class SourceGathering
 {
-    public async Task<bool> Blub(string url, string outputDir)
+    public async Task<PageData?> GetPageData(string url)
     {
         try
         {
             using var playwright = await Playwright.CreateAsync();
             await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = true // Set to false if you want to see the browser
+                Headless = true
             });
 
-            await CapturePageAsync(browser, url, outputDir, "normal");
-            await CapturePageAsync(browser, url, outputDir, "mobile");
+            var (desktopHtmlContent, desktopScreenshot) = await CapturePageAsync(browser, url, "normal");
+            var (_, mobileScreenshot) = await CapturePageAsync(browser, url, "mobile");
 
-            // normalImageUrl = await UploadImage("./output/screenshot_normal.png");
-            //var mobileImageUrl = await UploadImage("./output/screenshot_mobile.png");
-
-            // Close Browser
             await browser.CloseAsync();
+
+            if (desktopHtmlContent == null || desktopScreenshot == null || mobileScreenshot == null)
+                return null;
+
+            return new PageData(url, desktopHtmlContent, desktopScreenshot, mobileScreenshot);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"An error occurred: {ex.Message}");
-            return false;
+            return null;
         }
-
-        return true;
     }
 
-    private async Task CapturePageAsync(IBrowser browser, string url, string outputDir, string mode)
+    private async Task<(string? HtmlContent, byte[]? Screenshot)> CapturePageAsync(
+        IBrowser browser,
+        string url,
+        string mode
+    )
     {
         try
         {
@@ -51,25 +54,21 @@ public class SourceGathering
             await page.GotoAsync(url, new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
 
             // Capture Screenshot
-            var screenshotPath = Path.Combine(outputDir, $"screenshot_{mode}.png");
-            await page.ScreenshotAsync(new PageScreenshotOptions { Path = screenshotPath, FullPage = true });
-            Console.WriteLine($"Screenshot saved: {screenshotPath}");
+            var screenshotBytes = await page.ScreenshotAsync(new PageScreenshotOptions { FullPage = true });
+            Console.WriteLine("Screenshot saved.");
 
-            // Extract Full HTML
-            if (mode == "mobile")
-            {
-                Console.WriteLine("Skipping html extraction for mobile mode");
-                return;
-            }
 
             var htmlContent = await page.ContentAsync();
-            var htmlPath = Path.Combine(outputDir, $"page_{mode}.html");
-            await File.WriteAllTextAsync(htmlPath, htmlContent);
-            Console.WriteLine($"HTML content saved: {htmlPath}");
+            Console.WriteLine("HTML content saved");
+
+            return (htmlContent, screenshotBytes);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"An error occurred while capturing the page in {mode} mode: {ex.Message}");
+            return (null, null);
         }
     }
 }
+
+public record PageData(string Url, string HtmlContent, byte[] DesktopScreenshot, byte[] MobileScreenshot);
