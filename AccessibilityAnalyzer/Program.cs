@@ -30,10 +30,10 @@ app.MapGet("/analyze",
             [FromQuery(Name = "url")] string url
         ) =>
         {
-            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
-            {
-                return Results.BadRequest<string>("Invalid URL");
-            }
+            if (string.IsNullOrEmpty(url)) return Results.BadRequest("URL is required");
+
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) || (uri.Scheme != "http" && uri.Scheme != "https"))
+                return Results.BadRequest("Invalid URL. Please provide a valid absolute URL (http or https)");
 
             var analyzeUrlResult = await analyzer.AnalyzeUrl(uri);
             return Results.Ok(analyzeUrlResult);
