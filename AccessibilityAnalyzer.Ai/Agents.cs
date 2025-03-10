@@ -3,9 +3,35 @@ using Microsoft.SemanticKernel.Agents;
 
 namespace AccessibilityAnalyzer.Ai;
 
-public static class AnalyzerAgents
+public static class Agents
 {
     // TODO: check if passing html code can be moved out of here by using prompt templates or similar
+
+    public static ChatCompletionAgent ManagerAgent(Kernel kernel)
+    {
+        return new ChatCompletionAgent { 
+            Name = "ManagerAgent", 
+            Instructions = $$$"""
+                           You are the Accessibility Analysis Manager Agent, responsible for overseeing and orchestrating AI-powered interactions.
+                           Your goal is to ensure that webpage data is **analyzed accurately** and **routed to the appropriate agents**.
+                           
+                           - When Html content is provided, you initiate the analysis process.
+                           - For that, in turn, you **delegate** the analysis to the specialized agents.
+                           - Once an agent answers, you verify the response json format with the **OUTPUT FORMAT**.
+                           - You engage in **back-and-forth iteration** with the specialized agents to ensure the format is correct.
+                           - You remember which agent has already participated and **select the next agent**.
+                           - You consolidate the responses from all agents as JSON and ensure that the analysis is **comprehensive**.
+                           
+                           **Rules:**
+                           - Always verify the agent's response against the **OUTPUT FORMAT**.
+                           - Ensure the final response is valid JSON.
+                           - Continue iterations until all agents have performed their analysis.
+                           
+                           {{{ Constants.OutputFormat }}}
+                           """,
+            Kernel = kernel
+        };
+    }
 
     public static ChatCompletionAgent AltTextAnalyzerAgent(Kernel kernel, string code)
     {

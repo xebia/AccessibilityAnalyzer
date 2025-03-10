@@ -17,14 +17,13 @@ public class AgentAnalysis(Kernel kernel)
     private AgentGroupChat CreateGroupChat(string htmlContent)
     {
         // create manager agent
-        // Todo: extract
-        var managerAgent = new ChatCompletionAgent { Name = "ManagerAgent" };
+        var managerAgent = Agents.ManagerAgent(kernel);
 
         // create code agents
-        var formValidationAgent = AnalyzerAgents.FormValidationAgent(kernel, htmlContent);
-        var keyboardNavigationAgent = AnalyzerAgents.KeyboardNavigationAgent(kernel, htmlContent);
-        var altTextAnalyzerAgent = AnalyzerAgents.AltTextAnalyzerAgent(kernel, htmlContent);
-        var semanticCodeAgent = AnalyzerAgents.SemanticCodeAgent(kernel, htmlContent);
+        var formValidationAgent = Agents.FormValidationAgent(kernel, htmlContent);
+        var keyboardNavigationAgent = Agents.KeyboardNavigationAgent(kernel, htmlContent);
+        var altTextAnalyzerAgent = Agents.AltTextAnalyzerAgent(kernel, htmlContent);
+        var semanticCodeAgent = Agents.SemanticCodeAgent(kernel, htmlContent);
 
         // todo: adjust message
         // Define Selection Strategy (Which Agent Speaks Next?)
