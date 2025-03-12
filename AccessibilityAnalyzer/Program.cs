@@ -1,4 +1,5 @@
 using AccessibilityAnalyzer;
+using AccessibilityAnalyzer.Dto;
 using AccessibilityAnalyzer.Extensions;
 using AccessibilityAnalyzer.SourceGathering;
 using DotNetEnv;
@@ -16,6 +17,7 @@ builder.Services.AddScoped<IAnalyzer, Analyzer>();
 builder.Services.AddOpenApi();
 
 builder.Services.AddOpenAiServices();
+builder.Services.AddAiAnalysis();
 
 var app = builder.Build();
 
@@ -36,7 +38,13 @@ app.MapGet("/analyze",
                 return Results.BadRequest("Invalid URL. Please provide a valid absolute URL (http or https)");
 
             var analyzeUrlResult = await analyzer.AnalyzeUrl(uri);
-            return Results.Ok(analyzeUrlResult);
+
+            if (analyzeUrlResult == null)
+            {
+                return Results.InternalServerError("Not able to analyze the website");
+            }
+            
+            return Results.Ok(analyzeUrlResult.Select(AccessibilityAnalysis.FromModel).ToArray());
         })
     .WithName("AnalyzeUrl");
 

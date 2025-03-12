@@ -1,3 +1,4 @@
+using AccessibilityAnalyzer.Ai;
 using Microsoft.SemanticKernel;
 
 namespace AccessibilityAnalyzer.Extensions;
@@ -16,15 +17,18 @@ public static class ServicesExtensions
         serviceCollection.AddAzureOpenAIChatCompletion(
             gptDeploymentName,
             apiKey: key,
-            endpoint: endpoint,
-            modelId: "gpt-4o" // Optional name of the underlying model if the deployment name doesn't match the model name
+            endpoint: endpoint
         );
-#pragma warning disable SKEXP0001
-        //serviceCollection.AddAzureOpenAITextToAudio(ttsDeploymentName, endpoint, key);
-#pragma warning restore SKEXP0001
 
         serviceCollection.AddTransient(serviceProvider => new Kernel(serviceProvider));
 
+        return serviceCollection;
+    }
+    
+    public static IServiceCollection AddAiAnalysis(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddTransient<IAnalysisProcess, AnalysisProcess>();
+        
         return serviceCollection;
     }
 }

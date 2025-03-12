@@ -4,7 +4,7 @@ public static class Constants
 {
     public const string OutputFormat = """
                                        OUTPUT FORMAT:
-                                       Return only structured JSON in the following example format. Add more objects as needed:
+                                       Return only structured JSON in the following example format. Not in markdown. Just pure JSON as text. Add more objects as needed:
                                         
                                        {
                                            ""analysis"": [

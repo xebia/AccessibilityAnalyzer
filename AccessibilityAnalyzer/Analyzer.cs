@@ -1,18 +1,21 @@
+using AccessibilityAnalyzer.Ai;
+using AccessibilityAnalyzer.Ai.Models;
+
 namespace AccessibilityAnalyzer;
 
-public class Analyzer(SourceGathering.SourceGathering sourceGathering) : IAnalyzer
+public class Analyzer(SourceGathering.SourceGathering sourceGathering, IAnalysisProcess analysisProcess) : IAnalyzer
 {
-    public async Task<string> AnalyzeUrl(Uri uri)
+    public async Task<AccessibilityAnalysis[]?> AnalyzeUrl(Uri uri)
     {
         var pageData = await sourceGathering.GetPageData(uri);
 
-        if (pageData == null) return string.Empty;
+        if (pageData == null) return null;
 
-        return pageData.HtmlContent;
+        return await analysisProcess.Begin(pageData.HtmlContent);
     }
 }
 
 public interface IAnalyzer
 {
-    Task<string> AnalyzeUrl(Uri uri);
+    Task<AccessibilityAnalysis[]?> AnalyzeUrl(Uri uri);
 }
