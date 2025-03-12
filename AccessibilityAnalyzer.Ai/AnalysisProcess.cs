@@ -60,8 +60,10 @@ public class AnalysisProcess(Kernel kernel) : IAnalysisProcess
 
 
         var process = processBuilder.Build();
+
         var processContext =
             await process.StartAsync(kernel, new KernelProcessEvent { Id = "Start", Data = htmlContent });
+
 
         var processInfo = await processContext.GetStateAsync();
         var step = processInfo.Steps.FirstOrDefault(s => s.State.Name == nameof(EndStep));
@@ -71,3 +73,24 @@ public class AnalysisProcess(Kernel kernel) : IAnalysisProcess
         return state!.State!.Result;
     }
 }
+/*
+flowchart LR
+   Start["Start"]
+   End["End"]
+   AltTextAnalyzerStep["AltTextAnalyzerStep"]
+   AltTextAnalyzerStep["AltTextAnalyzerStep"] --> HtmlAggregationStep["HtmlAggregationStep"]
+   KeyboardNavigationAnalyzerStep["KeyboardNavigationAnalyzerStep"]
+   KeyboardNavigationAnalyzerStep["KeyboardNavigationAnalyzerStep"] --> HtmlAggregationStep["HtmlAggregationStep"]
+   SemanticCodeAnalyzerStep["SemanticCodeAnalyzerStep"]
+   SemanticCodeAnalyzerStep["SemanticCodeAnalyzerStep"] --> HtmlAggregationStep["HtmlAggregationStep"]
+   FormValidationAnalyzerStep["FormValidationAnalyzerStep"]
+   FormValidationAnalyzerStep["FormValidationAnalyzerStep"] --> HtmlAggregationStep["HtmlAggregationStep"]
+   HtmlAggregationStep["HtmlAggregationStep"]
+   EndStep["EndStep"]
+   EndStep["EndStep"] --> End["End"]
+   HtmlAggregationStep["HtmlAggregationStep"] --> EndStep["EndStep"]
+   Start --> AltTextAnalyzerStep["AltTextAnalyzerStep"]
+   Start --> KeyboardNavigationAnalyzerStep["KeyboardNavigationAnalyzerStep"]
+   Start --> SemanticCodeAnalyzerStep["SemanticCodeAnalyzerStep"]
+   Start --> FormValidationAnalyzerStep["FormValidationAnalyzerStep"]
+*/
