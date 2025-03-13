@@ -11,7 +11,7 @@ public class Analyzer(SourceGathering.SourceGathering sourceGathering, IAnalysis
 
         if (pageData == null) return null;
 
-        return await analysisProcess.Begin(pageData.HtmlContent);
+        return await analysisProcess.StartProcess(pageData.HtmlContent, pageData.DesktopScreenshot);
     }
 }
 

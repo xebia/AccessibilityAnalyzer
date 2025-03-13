@@ -4,6 +4,7 @@ using Microsoft.SemanticKernel;
 
 namespace AccessibilityAnalyzer.Ai.Steps;
 
+// TODO rename to something like JsonDeserializationStep or similar
 public class EndStep : KernelProcessStep<EndStep.FinalState>
 {
     private FinalState _state;
@@ -15,7 +16,7 @@ public class EndStep : KernelProcessStep<EndStep.FinalState>
     }
 
     [KernelFunction(Functions.End)]
-    public async Task<AccessibilityAnalysis[]?> End(Kernel kernel, KernelProcessStepContext context, string response)
+    public async Task End(Kernel kernel, KernelProcessStepContext context, string response)
     {
         var accessibilityAnalyses = JsonSerializer.Deserialize<AccessibilityAnalysis[]>(response,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -23,11 +24,11 @@ public class EndStep : KernelProcessStep<EndStep.FinalState>
         if (accessibilityAnalyses == null || accessibilityAnalyses.Length == 0)
         {
             await context.EmitEventAsync("Error", "No accessibility issues were found.");
-            return null;
+            return;
         }
 
         _state.Result = accessibilityAnalyses;
-        return accessibilityAnalyses;
+        await context.EmitEventAsync(OutputEvents.ResponseParsed, accessibilityAnalyses);
     }
 
     public class Functions
@@ -35,6 +36,11 @@ public class EndStep : KernelProcessStep<EndStep.FinalState>
         public const string End = nameof(End);
     }
 
+    public static class OutputEvents
+    {
+        public const string ResponseParsed = nameof(ResponseParsed);
+    }
+    
     public class FinalState
     {
         public AccessibilityAnalysis[] Result { get; set; }

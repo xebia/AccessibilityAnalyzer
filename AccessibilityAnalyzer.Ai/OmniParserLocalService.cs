@@ -32,8 +32,7 @@ public class OmniParserClient(Uri endpoint, HttpClient httpClient)
     {
         using var httpRequestMessage = CreateImageToTextRequest(content);
         var body = await SendRequestAndGetStringBodyAsync(httpRequestMessage, cancellationToken);
-
-        // var response = System.Text.Json.JsonSerializer.Deserialize<OmniParserResult>(body);
+        
         var response = new TextContent(body);
         return [response];
     }

@@ -1,12 +1,15 @@
 using AccessibilityAnalyzer.Ai.Models;
+using AccessibilityAnalyzer.Ai.Processes;
 using AccessibilityAnalyzer.Ai.Steps;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Process.Tools;
 
 namespace AccessibilityAnalyzer.Ai;
 
 public interface IAnalysisProcess
 {
     Task<AccessibilityAnalysis[]?> Begin(string htmlContent);
+    Task<AccessibilityAnalysis[]?> StartProcess(string htmlContent, byte[] screenshot);
 }
 
 public class AnalysisProcess(Kernel kernel) : IAnalysisProcess
@@ -22,7 +25,7 @@ public class AnalysisProcess(Kernel kernel) : IAnalysisProcess
         var htmlAggregationStep = processBuilder.AddStepFromType<HtmlAggregationStep>();
         var endStep = processBuilder.AddStepFromType<EndStep>();
 
-        var uiAnalyzerStep = processBuilder.AddStepFromType<UiAnalyzerStep>();
+        var uiAnalyzerStep = processBuilder.AddStepFromType<UiParserStep>();
 
         // Orchestrate the events
         processBuilder
@@ -74,6 +77,60 @@ public class AnalysisProcess(Kernel kernel) : IAnalysisProcess
 
         var state = step.State as KernelProcessStepState<EndStep.FinalState>;
         return state!.State!.Result;
+    }
+
+
+    public async Task<AccessibilityAnalysis[]?> StartProcess(string htmlContent, byte[] screenshot)
+    {
+        var processBuilder = new ProcessBuilder(nameof(AnalysisProcess));
+
+        var htmlAnalysisStep = processBuilder.AddStepFromProcess(HtmlAnalysisProcess.CreateProcess());
+        var visualAnalysisStep = processBuilder.AddStepFromProcess(VisualAnalysisProcess.CreateProcess());
+
+        // todo: add correct aggregation step
+        var analysisAggregationStep = processBuilder.AddStepFromType<AnalysisAggregationStep>();
+
+
+        processBuilder
+            .OnInputEvent(ProcessEvents.Start)
+            .SendEventTo(
+                htmlAnalysisStep.WhereInputEventIs(HtmlAnalysisProcess.ProcessEvents.StartHtmlContentAnalysis))
+            .SendEventTo(visualAnalysisStep.WhereInputEventIs(VisualAnalysisProcess.ProcessEvents.StartVisualAnalysis));
+
+        htmlAnalysisStep
+            .OnEvent(HtmlAnalysisProcess.ProcessEvents.HtmlContentAnalysisReady)
+            .SendEventTo(new ProcessFunctionTargetBuilder(analysisAggregationStep,
+                AnalysisAggregationStep.Functions.HtmlAnalysisReady));
+
+        visualAnalysisStep
+            .OnEvent(VisualAnalysisProcess.ProcessEvents.VisualAnalysisReady)
+            .SendEventTo(new ProcessFunctionTargetBuilder(analysisAggregationStep,
+                AnalysisAggregationStep.Functions.VisualAnalysisReady));
+
+        analysisAggregationStep
+            .OnEvent(AnalysisAggregationStep.OutputEvents.AnalysisComplete);
+
+        var process = processBuilder.Build();
+
+        var a = processBuilder.ToMermaid();
+
+        var processContext =
+            await process.StartAsync(kernel,
+                new KernelProcessEvent { Id = ProcessEvents.Start, Data = new PageData(htmlContent, screenshot) });
+
+        var processInfo = await processContext.GetStateAsync();
+        // var step = processInfo.Steps.FirstOrDefault(s => s.State.Name == nameof(EndStep));
+        // if (step == null) return null;
+        //
+        // var state = step.State as KernelProcessStepState<EndStep.FinalState>;
+        // return state!.State!.Result;
+
+        return null;
+    }
+
+    public struct ProcessEvents
+    {
+        public const string Start = nameof(Start);
     }
 }
 /*
