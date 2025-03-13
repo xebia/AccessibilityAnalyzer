@@ -10,6 +10,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.SemanticKernel.Agents.Core" Version="1.40.1-preview"/>
         <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" Version="1.40.1"/>
+        <PackageReference Include="Microsoft.SemanticKernel.Connectors.HuggingFace" Version="1.41.0-preview" />
         <PackageReference Include="Microsoft.SemanticKernel.Process.Core" Version="1.41.0-alpha" />
         <PackageReference Include="Microsoft.SemanticKernel.Process.LocalRuntime" Version="1.41.0-alpha" />
     </ItemGroup>

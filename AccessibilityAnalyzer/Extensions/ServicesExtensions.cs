@@ -19,6 +19,15 @@ public static class ServicesExtensions
             apiKey: key,
             endpoint: endpoint
         );
+        
+        var huggingFaceApiToken = Environment.GetEnvironmentVariable("HUGGINGFACE_API_KEY");
+        if (huggingFaceApiToken is null)
+            throw new InvalidOperationException("Missing HuggingFace configuration");
+        
+        serviceCollection.AddHuggingFaceImageToText(
+            model: "microsoft/OmniParser-v2.0",
+            apiKey: huggingFaceApiToken
+        );
 
         serviceCollection.AddTransient(serviceProvider => new Kernel(serviceProvider));
 
