@@ -16,6 +16,8 @@ builder.Services.AddScoped<IAnalyzer, Analyzer>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddHttpClient();
+
 builder.Services.AddOpenAiServices();
 builder.Services.AddAiAnalysis();
 

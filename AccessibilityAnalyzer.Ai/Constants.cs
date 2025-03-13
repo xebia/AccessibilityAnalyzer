@@ -1,7 +1,8 @@
 ﻿namespace AccessibilityAnalyzer.Ai;
 
-public static class Constants
+public struct Constants
 {
+    public const string ImageMimeType = "image/jpeg";
     public const string OutputFormat = """
                                        OUTPUT FORMAT:
                                        Return only structured JSON in the following example format. Not in markdown. Just pure JSON as text. Add more objects as needed:

@@ -22,9 +22,12 @@ public class AnalysisProcess(Kernel kernel) : IAnalysisProcess
         var htmlAggregationStep = processBuilder.AddStepFromType<HtmlAggregationStep>();
         var endStep = processBuilder.AddStepFromType<EndStep>();
 
+        var uiAnalyzerStep = processBuilder.AddStepFromType<UiAnalyzerStep>();
+
         // Orchestrate the events
         processBuilder
             .OnInputEvent("Start")
+            //.SendEventTo(new ProcessFunctionTargetBuilder(uiAnalyzerStep));
             .SendEventTo(new ProcessFunctionTargetBuilder(altTextAnalyzerStep))
             .SendEventTo(new ProcessFunctionTargetBuilder(keyboardNavigationAnalyzerStep))
             .SendEventTo(new ProcessFunctionTargetBuilder(semanticCodeAnalyzerStep))
