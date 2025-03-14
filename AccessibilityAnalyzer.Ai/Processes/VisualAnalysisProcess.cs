@@ -12,7 +12,7 @@ public static class VisualAnalysisProcess
         var uiParserStep = processBuilder.AddStepFromType<UiParserStep>();
         var uiColorAnalysisStep = processBuilder.AddStepFromType<UiColorAnalysisStep>();
         var uiFontsAnalysisStep = processBuilder.AddStepFromType<UiFontsAnalysisStep>();
-
+        var visualAggregationStep = processBuilder.AddStepFromType<VisualAggregationStep>();
         var externalStep = processBuilder.AddStepFromType<ExternalVisualAnalysisStep>();
 
         // Orchestrate the events
@@ -25,12 +25,19 @@ public static class VisualAnalysisProcess
             .SendEventTo(new ProcessFunctionTargetBuilder(uiColorAnalysisStep))
             .SendEventTo(new ProcessFunctionTargetBuilder(uiFontsAnalysisStep));
 
-        // todo aggregate step
-
         uiColorAnalysisStep
             .OnEvent(UiColorAnalysisStep.OutputEvents.UiColorAnalyzed)
-            .SendEventTo(new ProcessFunctionTargetBuilder(externalStep));
+            .SendEventTo(new ProcessFunctionTargetBuilder(visualAggregationStep, 
+                VisualAggregationStep.Functions.UiColorWasAnalyzed));
 
+        uiFontsAnalysisStep
+            .OnEvent(UiFontsAnalysisStep.OutputEvents.UiFontsAnalyzed)
+            .SendEventTo(new ProcessFunctionTargetBuilder(visualAggregationStep, 
+                VisualAggregationStep.Functions.UiFontsWereAnalyzed));
+
+        visualAggregationStep
+            .OnEvent(VisualAggregationStep.OutputEvents.VisualAnalysisComplete)
+            .SendEventTo(new ProcessFunctionTargetBuilder(externalStep));
 
         return processBuilder;
     }
