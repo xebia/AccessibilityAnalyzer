@@ -1,7 +1,7 @@
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 
-namespace AccessibilityAnalyzer.Ai.Steps;
+namespace AccessibilityAnalyzer.Ai.Steps.Html;
 
 public class
     KeyboardNavigationAnalyzerStep : KernelProcessStep<KeyboardNavigationAnalyzerStep.KeyboardNavigationAnalyzerState>

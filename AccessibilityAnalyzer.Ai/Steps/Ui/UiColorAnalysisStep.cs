@@ -3,7 +3,7 @@ using AccessibilityAnalyzer.Ai.Models;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 
-namespace AccessibilityAnalyzer.Ai.Steps;
+namespace AccessibilityAnalyzer.Ai.Steps.Ui;
 
 public class UiColorAnalysisStep : KernelProcessStep<UiColorAnalysisStep.UiColorAnalysisState>
 {

@@ -1,6 +1,6 @@
 using Microsoft.SemanticKernel;
 
-namespace AccessibilityAnalyzer.Ai.Steps;
+namespace AccessibilityAnalyzer.Ai.Steps.Html;
 
 public class HtmlAggregationStep : KernelProcessStep<HtmlAggregationStep.HtmlAggregateState>
 {

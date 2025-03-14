@@ -3,7 +3,7 @@ using AccessibilityAnalyzer.Ai.Models;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ImageToText;
 
-namespace AccessibilityAnalyzer.Ai.Steps;
+namespace AccessibilityAnalyzer.Ai.Steps.Ui;
 
 public class UiParserStep : KernelProcessStep
 {
