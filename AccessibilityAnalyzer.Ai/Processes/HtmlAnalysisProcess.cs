@@ -14,7 +14,7 @@ public static class HtmlAnalysisProcess
         var semanticCodeAnalyzerStep = processBuilder.AddStepFromType<SemanticCodeAnalyzerStep>();
         var formValidationAnalyzerStep = processBuilder.AddStepFromType<FormValidationAnalyzerStep>();
         var htmlAggregationStep = processBuilder.AddStepFromType<HtmlAggregationStep>();
-        var endStep = processBuilder.AddStepFromType<EndStep>();
+        var jsonDeserializationStep = processBuilder.AddStepFromType<JsonDeserializationStep>();
         var externalStep = processBuilder.AddStepFromType<ExternalHtmlAnalysisStep>();
 
         // Orchestrate the events
@@ -47,10 +47,10 @@ public static class HtmlAnalysisProcess
 
         htmlAggregationStep
             .OnEvent(HtmlAggregationStep.OutputEvents.AnalysisComplete)
-            .SendEventTo(new ProcessFunctionTargetBuilder(endStep));
+            .SendEventTo(new ProcessFunctionTargetBuilder(jsonDeserializationStep));
 
-        endStep
-            .OnEvent(EndStep.OutputEvents.ResponseParsed)
+        jsonDeserializationStep
+            .OnEvent(JsonDeserializationStep.OutputEvents.ResponseParsed)
             .SendEventTo(new ProcessFunctionTargetBuilder(externalStep));
         
         return processBuilder;

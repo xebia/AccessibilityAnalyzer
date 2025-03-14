@@ -13,6 +13,7 @@ public static class VisualAnalysisProcess
         var uiColorAnalysisStep = processBuilder.AddStepFromType<UiColorAnalysisStep>();
         var uiFontsAnalysisStep = processBuilder.AddStepFromType<UiFontsAnalysisStep>();
         var visualAggregationStep = processBuilder.AddStepFromType<VisualAggregationStep>();
+        var jsonDeserializationStep = processBuilder.AddStepFromType<JsonDeserializationStep>();
         var externalStep = processBuilder.AddStepFromType<ExternalVisualAnalysisStep>();
 
         // Orchestrate the events
@@ -37,6 +38,11 @@ public static class VisualAnalysisProcess
 
         visualAggregationStep
             .OnEvent(VisualAggregationStep.OutputEvents.VisualAnalysisComplete)
+            .SendEventTo(new ProcessFunctionTargetBuilder(jsonDeserializationStep,
+                JsonDeserializationStep.Functions.DeserializeJson));
+
+        jsonDeserializationStep
+            .OnEvent(JsonDeserializationStep.OutputEvents.ResponseParsed)
             .SendEventTo(new ProcessFunctionTargetBuilder(externalStep));
 
         return processBuilder;
