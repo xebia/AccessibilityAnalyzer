@@ -14,7 +14,8 @@ public class AnalysisAggregationStep : KernelProcessStep<AnalysisAggregationStep
     }
 
     [KernelFunction(Functions.HtmlAnalysisReady)]
-    public async Task HtmlAnalysisReady(Kernel kernel, KernelProcessStepContext context, AccessibilityAnalysis[] response)
+    public async Task HtmlAnalysisReady(Kernel kernel, KernelProcessStepContext context,
+        AccessibilityAnalysis[] response)
     {
         _state.HtmlAnalysisResponse = response;
         _state.HtmlAnalysisComplete = true;
@@ -22,7 +23,8 @@ public class AnalysisAggregationStep : KernelProcessStep<AnalysisAggregationStep
     }
 
     [KernelFunction(Functions.VisualAnalysisReady)]
-    public async Task VisualAnalysisReady(Kernel kernel, KernelProcessStepContext context, AccessibilityAnalysis[] response)
+    public async Task VisualAnalysisReady(Kernel kernel, KernelProcessStepContext context,
+        AccessibilityAnalysis[] response)
     {
         _state.VisualAnalysisResponse = response;
         _state.VisualAnalysisComplete = true;
@@ -32,13 +34,9 @@ public class AnalysisAggregationStep : KernelProcessStep<AnalysisAggregationStep
     private async Task CheckIfAnalysisIsCompleteAsync(KernelProcessStepContext context)
     {
         if (_state.HtmlAnalysisComplete && _state.VisualAnalysisComplete)
-            await context.EmitEventAsync(OutputEvents.AnalysisComplete, AggregateResults());
+            await context.EmitEventAsync(OutputEvents.AnalysisComplete, _state.AggregateResults());
     }
 
-    private AccessibilityAnalysis[] AggregateResults()
-    {
-        return [.. _state.HtmlAnalysisResponse, .. _state.VisualAnalysisResponse ];
-    }
 
     public static class Functions
     {
@@ -57,5 +55,10 @@ public class AnalysisAggregationStep : KernelProcessStep<AnalysisAggregationStep
         public AccessibilityAnalysis[] HtmlAnalysisResponse { get; set; } = [];
         public bool VisualAnalysisComplete { get; set; }
         public AccessibilityAnalysis[] VisualAnalysisResponse { get; set; } = [];
+
+        public AccessibilityAnalysis[] AggregateResults()
+        {
+            return [.. HtmlAnalysisResponse, .. VisualAnalysisResponse];
+        }
     }
 }

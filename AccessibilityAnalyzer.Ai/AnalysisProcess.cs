@@ -7,7 +7,7 @@ using Microsoft.SemanticKernel.Process.Tools;
 namespace AccessibilityAnalyzer.Ai;
 
 public interface IAnalysisProcess
-{ 
+{
     Task<AccessibilityAnalysis[]?> StartProcess(string htmlContent, byte[] screenshot);
 }
 
@@ -45,20 +45,19 @@ public class AnalysisProcess(Kernel kernel) : IAnalysisProcess
 
         var process = processBuilder.Build();
 
-        //var mermaid = processBuilder.ToMermaid();
+        var mermaid = processBuilder.ToMermaid();
 
         var processContext =
             await process.StartAsync(kernel,
                 new KernelProcessEvent { Id = ProcessEvents.Start, Data = new PageData(htmlContent, screenshot) });
 
+        // get the data out of the last step
         var processInfo = await processContext.GetStateAsync();
-        // var step = processInfo.Steps.FirstOrDefault(s => s.State.Name == nameof(EndStep));
-        // if (step == null) return null;
-        //
-        // var state = step.State as KernelProcessStepState<EndStep.FinalState>;
-        // return state!.State!.Result;
+        var step = processInfo.Steps.FirstOrDefault(s => s.State.Name == nameof(AnalysisAggregationStep));
+        if (step == null) return null;
 
-        return null;
+        var state = step.State as KernelProcessStepState<AnalysisAggregationStep.AnalysisAggregateState>;
+        return state!.State!.AggregateResults();
     }
 
     public struct ProcessEvents
