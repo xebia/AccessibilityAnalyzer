@@ -28,7 +28,8 @@ public class AnalysisProcess(Kernel kernel) : IAnalysisProcess
             .OnInputEvent(ProcessEvents.Start)
             .SendEventTo(
                 htmlAnalysisStep.WhereInputEventIs(HtmlAnalysisProcess.ProcessEvents.StartHtmlContentAnalysis))
-            .SendEventTo(visualAnalysisStep.WhereInputEventIs(VisualAnalysisProcess.ProcessEvents.StartVisualAnalysis));
+            .SendEventTo(visualAnalysisStep.WhereInputEventIs(VisualAnalysisProcess.ProcessEvents.StartVisualAnalysis))
+            ;
 
         htmlAnalysisStep
             .OnEvent(HtmlAnalysisProcess.ProcessEvents.HtmlContentAnalysisReady)
