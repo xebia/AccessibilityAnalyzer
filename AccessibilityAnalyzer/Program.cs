@@ -46,7 +46,20 @@ app.MapGet("/analyze",
                 return Results.InternalServerError("Not able to analyze the website");
             }
             
-            return Results.Ok(analyzeUrlResult.Select(AccessibilityAnalysis.FromModel).ToArray());
+            // Convert to AccessibilityAnalysis objects
+            var accessibilityAnalyses = analyzeUrlResult.Select(AccessibilityAnalysis.FromModel).ToArray();
+            
+            // Combine all analyses into a single object
+            var combinedAnalysis = new AccessibilityAnalysis
+            {
+                Analysis = accessibilityAnalyses.SelectMany(a => a.Analysis).ToList(),
+                Summary = new Summary
+                {
+                    Failed = accessibilityAnalyses.Sum(a => a.Summary?.Failed ?? 0)
+                }
+            };
+            
+            return Results.Ok(combinedAnalysis);
         })
     .WithName("AnalyzeUrl");
 
