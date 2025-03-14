@@ -1,3 +1,4 @@
+using AccessibilityAnalyzer.Ai.Models;
 using Microsoft.SemanticKernel;
 
 namespace AccessibilityAnalyzer.Ai.Steps;
@@ -13,7 +14,7 @@ public class AnalysisAggregationStep : KernelProcessStep<AnalysisAggregationStep
     }
 
     [KernelFunction(Functions.HtmlAnalysisReady)]
-    public async Task HtmlAnalysisReady(Kernel kernel, KernelProcessStepContext context, object response)
+    public async Task HtmlAnalysisReady(Kernel kernel, KernelProcessStepContext context, AccessibilityAnalysis[] response)
     {
         _state.HtmlAnalysisResponse = response;
         _state.HtmlAnalysisComplete = true;
@@ -21,7 +22,7 @@ public class AnalysisAggregationStep : KernelProcessStep<AnalysisAggregationStep
     }
 
     [KernelFunction(Functions.VisualAnalysisReady)]
-    public async Task VisualAnalysisReady(Kernel kernel, KernelProcessStepContext context, object response)
+    public async Task VisualAnalysisReady(Kernel kernel, KernelProcessStepContext context, AccessibilityAnalysis[] response)
     {
         _state.VisualAnalysisResponse = response;
         _state.VisualAnalysisComplete = true;
@@ -34,10 +35,9 @@ public class AnalysisAggregationStep : KernelProcessStep<AnalysisAggregationStep
             await context.EmitEventAsync(OutputEvents.AnalysisComplete, AggregateResults());
     }
 
-    private object AggregateResults()
+    private AccessibilityAnalysis[] AggregateResults()
     {
-        // For now just returning an array of both analysis results
-        return new[] { _state.HtmlAnalysisResponse, _state.VisualAnalysisResponse };
+        return [.. _state.HtmlAnalysisResponse, .. _state.VisualAnalysisResponse ];
     }
 
     public static class Functions
@@ -54,8 +54,8 @@ public class AnalysisAggregationStep : KernelProcessStep<AnalysisAggregationStep
     public class AnalysisAggregateState
     {
         public bool HtmlAnalysisComplete { get; set; }
-        public object HtmlAnalysisResponse { get; set; }
+        public AccessibilityAnalysis[] HtmlAnalysisResponse { get; set; } = [];
         public bool VisualAnalysisComplete { get; set; }
-        public object VisualAnalysisResponse { get; set; }
+        public AccessibilityAnalysis[] VisualAnalysisResponse { get; set; } = [];
     }
 }
