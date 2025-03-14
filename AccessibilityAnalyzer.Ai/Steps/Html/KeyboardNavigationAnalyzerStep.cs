@@ -51,7 +51,7 @@ public class
         _state.ChatHistory!.AddUserMessage($"HTML_CODE:\n\n{htmlContent}");
 
         // Get a response from the LLM
-        var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
+        var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>(Constants.Gpt3ServiceKey);
         var generatedDocumentationResponse =
             await chatCompletionService.GetChatMessageContentAsync(_state.ChatHistory!);
 

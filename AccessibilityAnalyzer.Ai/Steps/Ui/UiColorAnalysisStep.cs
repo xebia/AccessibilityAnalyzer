@@ -50,7 +50,7 @@ public class UiColorAnalysisStep : KernelProcessStep<UiColorAnalysisStep.UiColor
         ]);
 
         // Get a response from the LLM
-        var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
+        var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>(Constants.Gpt4ServiceKey);
         var generatedDocumentationResponse =
             await chatCompletionService.GetChatMessageContentAsync(_state.ChatHistory!);
 

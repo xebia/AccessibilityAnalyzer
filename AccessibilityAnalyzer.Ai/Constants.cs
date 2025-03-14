@@ -2,7 +2,11 @@
 
 public struct Constants
 {
+    public const string Gpt3ServiceKey = "Gpt3";
+    public const string Gpt4ServiceKey = "Gpt4";
+
     public const string ImageMimeType = "image/jpeg";
+
     public const string OutputFormat = """
                                        OUTPUT FORMAT:
                                        Return only structured JSON in the following example format. 
@@ -25,12 +29,12 @@ public struct Constants
                                          }
                                        }
                                        """;
-    
+
     // public const string OutputFormatOld = """
     //                                    OUTPUT FORMAT:
     //                                    Return only structured JSON in the following example format. 
     //                                    You can only answer with valid json. Add more objects as needed:
-                                        
+
     //                                    {
     //                                        ""analysis"": [
     //                                            {
