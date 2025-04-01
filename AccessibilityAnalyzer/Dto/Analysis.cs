@@ -16,6 +16,7 @@ public class AccessibilityAnalysis
                 Category = item.Category,
                 Description = item.Description,
                 Detail = item.Detail,
+                Location = item.Location,
                 Information = item.Information?.Select(info => new Information
                 {
                     Title = info.Title,
@@ -38,6 +39,7 @@ public class AnalysisResult
     public string Category { get; set; }
     public string Description { get; set; }
     public string Detail { get; set; }
+    public string Location { get; set; }
     public List<Information> Information { get; set; }
 }
 

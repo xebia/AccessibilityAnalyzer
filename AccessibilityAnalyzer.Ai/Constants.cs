@@ -21,6 +21,7 @@ public struct Constants
                                              "category": "Keyboard Accessibility", (category of the agent performing the analysis)
                                              "description": "Element is not keyboard-focusable.", (Very short description of the issue, acts as the title)
                                              "detail": "All interactive elements must be accessible via keyboard navigation.", (Description of the issue)
+                                             "location": "Line 10, Column 20: <span id=\"foo\">Bar</span> , (Location of the issue in the code, or a description where in the image if an image is provided)
                                            },
                                            (add more objects as needed)
                                          ],

@@ -20,16 +20,12 @@ public class AnalysisProcess(Kernel kernel) : IAnalysisProcess
         var htmlAnalysisStep = processBuilder.AddStepFromProcess(HtmlAnalysisProcess.CreateProcess());
         var visualAnalysisStep = processBuilder.AddStepFromProcess(VisualAnalysisProcess.CreateProcess());
 
-        // todo: add correct aggregation step
         var analysisAggregationStep = processBuilder.AddStepFromType<AnalysisAggregationStep>();
-
-
+        
         processBuilder
             .OnInputEvent(ProcessEvents.Start)
-            .SendEventTo(
-                htmlAnalysisStep.WhereInputEventIs(HtmlAnalysisProcess.ProcessEvents.StartHtmlContentAnalysis))
-            .SendEventTo(visualAnalysisStep.WhereInputEventIs(VisualAnalysisProcess.ProcessEvents.StartVisualAnalysis))
-            ;
+            .SendEventTo(htmlAnalysisStep.WhereInputEventIs(HtmlAnalysisProcess.ProcessEvents.StartHtmlContentAnalysis))
+            .SendEventTo(visualAnalysisStep.WhereInputEventIs(VisualAnalysisProcess.ProcessEvents.StartVisualAnalysis));
 
         htmlAnalysisStep
             .OnEvent(HtmlAnalysisProcess.ProcessEvents.HtmlContentAnalysisReady)
