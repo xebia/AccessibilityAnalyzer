@@ -10,8 +10,8 @@ public static class VisualAnalysisProcess
     {
         ProcessBuilder processBuilder = new("VisualAnalysis");
 
-        var uiParserStep = processBuilder.AddStepFromType<UiParserStep>();
-        var uiColorAnalysisStep = processBuilder.AddStepFromType<UiColorAnalysisStep>();
+        var uiParserStep = processBuilder.AddStepFromType<NoStep>();
+        var uiColorAnalysisStep = processBuilder.AddStepFromType<WrongStep>();
         var uiFontsAnalysisStep = processBuilder.AddStepFromType<UiFontsAnalysisStep>();
         var visualAggregationStep = processBuilder.AddStepFromType<VisualAggregationStep>();
         var jsonDeserializationStep = processBuilder.AddStepFromType<JsonDeserializationStep>();
